@@ -6,10 +6,18 @@ import static org.junit.Assert.*;
 
 public class ATDTest {
     private ATD c = null;
-
+    private int[] b;
+    
+    
     @Before
-    public void setup(){
+    public void setUp(){
         c = new xList();
+        b = new int[]{0, 1, 2, 3, 4};
+    }
+    @After
+    public void tearDown(){
+        c = null;
+        b = null;
     }
     //******************************************** Test zero
     @Test
@@ -121,89 +129,109 @@ public class ATDTest {
     public void testOneDelFromAnyPos(){
        c.del(10);
     }
-    
-
+   //********************************************** Test Many 
     @Test
-    public void testAddGet() {
-        int n = 5;
-        
-        for (int i = 0; i < n; i++) {
-            c.addToEnd(i);
-        }
-        
-        int[] b = new int[n];
-        for (int i = 0; i < c.size(); i++) {
-            b[i] = c.get(i);
-        }
-        assertTrue(c.equals(b));
+    public void testManySize(){
+        c = new xList(b);
+        assertEquals(b.length, c.size());
     }
-@Ignore
     @Test
-    public void testAddToStart() {
-        int n = 5;
-        
-        for (int i = 0; i < n; i++) {
-            c.addToEnd(i);        
-        }
-        c.addToStart(100);
-        
-        int[] b = new int[]{100, 0, 1, 2, 3, 4};
-
-        assertTrue(c.equals(b));
+    public void testMenyGetZElement(){
+       c = new xList(b);
+       
+       assertEquals(b[0], c.get(0));
+    }
+    @Test
+    public void testMenyGetSecondElement(){
+       c = new xList(b);
+       assertEquals(b[1], c.get(1));
     }
     @Test(expected=ArrayIndexOutOfBoundsException.class)
-    public void testAddToPos() {
-        int n = 5;
-        
-        for (int i = 0; i < n; i++) {
-            c.addToEnd(i);        
-        }
-        c.addToPos(12,100);
-        
-        int[] b = new int[]{0, 1, 100, 2, 3, 4};
-
-        assertTrue(c.equals(b));
+    public void testMenyGetSomeIlligElement(){
+       c = new xList(b);
+       c.get(90);
     }
-@Ignore
     @Test
-    public void testDelFromStart() {
-        int n = 5;
+    public void testMenySetZElement(){
+       c = new xList(b);
+       c.set(0,100);
+       b[0] = 100;
+       assertTrue(c.equals(b));
         
-        for (int i = 0; i < n; i++) {
-            c.addToEnd(i);        
-        }
-        c.delFromStart();
-        
-        int[] b = new int[]{1, 2, 3, 4};
-
-        assertTrue(c.equals(b));
     }
-@Ignore    
     @Test
-    public void testDelFromEnd() {
-        int n = 5;
-        
-        for (int i = 0; i < n; i++) {
-            c.addToEnd(i);        
-        }
-        c.delFromEnd();
-        
-        int[] b = new int[]{0, 1, 2, 3};
-
-        assertTrue(c.equals(b));
+    public void testManySetSecondElement(){
+       c = new xList(b);
+       c.set(1,100);
+       b[1] = 100;
+       assertTrue(c.equals(b));
+    }
+    @Test(expected=ArrayIndexOutOfBoundsException.class)
+    public void testMenySetSomeIlligElement(){
+       c = new xList(b);
+       c.set(90,10);
     }
     
+    @Test
+    public void testManyAddToStart(){
+       c = new xList(b);
+       c.addToStart(10);
+       b = new int[]{10, 0, 1, 2, 3, 4};
+       
+       assertTrue(c.equals(b));
+       
+    }
+    @Test
+    public void testManyAddToEnd(){
+       c = new xList(b);
+       c.addToEnd(10);
+       b = new int[]{0, 1, 2, 3, 4, 10};
+       
+       assertTrue(c.equals(b));
+       
+       
+    }
+    @Test
+    public void testManyAddToSomePos(){
+       c = new xList(b);
+       c.addToPos(2,10);
+       b = new int[]{0, 1, 10, 2, 3, 4};
+       
+       assertTrue(c.equals(b));
+    }
     @Test(expected=ArrayIndexOutOfBoundsException.class)
-    public void testDelPos() {
-        int n = 5;
-        
-        for (int i = 0; i < n; i++) {
-            c.addToEnd(i);        
-        }
-        c.del(12);
-        
-        int[] b = new int[]{0, 1, 3, 4};
+    public void testManyAddToSomeIlligPos(){
+       c = new xList(b);
+       c.addToPos(90,10);
+    }
+    @Test
+    public void testManyDelFromStart(){
+       c = new xList(new int[]{10, 0, 1, 2, 3, 4});
+       c.delFromStart();
+       assertTrue(c.equals(b));
+    }
+    @Test
+    public void testManyDelFromEnd(){
+       c = new xList(new int[]{0, 1, 2, 3, 4, 10});
+       c.delFromEnd();
+       assertTrue(c.equals(b));
+    }
 
+    @Test
+    public void testManyDelFromAnyPos(){
+       c = new xList(new int[]{0, 1, 10, 2, 3, 4});
+       c.del(2);
+       assertTrue(c.equals(b));
+    }
+    @Test(expected=ArrayIndexOutOfBoundsException.class)
+    public void testManyDelFromAnyIllPos(){
+        c = new xList(b);
+        c.del(90);
+    }
+    @Test
+    public void testManyEquals() {
+        
+        c = new xList(b);
         assertTrue(c.equals(b));
     }
     
@@ -216,19 +244,13 @@ public class ATDTest {
         }
         c.sort();
 
-        int[] b = new int[]{0, 1, 2, 3, 4};
-
         assertTrue(c.equals(b));
     }
     
     @Test
     public void find() {
-        int n = 5;
-        
-        for (int i = n-1; i >= 0; i--) {
-            c.addToEnd(i);  
-        }
+       c = new xList(b);
 
-       assertEquals(0,  c.find(4));
+       assertEquals(4,  c.find(4));
     }
 }

@@ -6,6 +6,20 @@ public class xList implements ATD{
     private int n = 100;
     
     private int[] a = new int[n];
+
+    public xList() {
+    }
+
+    
+    public xList(int[] x) {
+        if(x.length > n  ) {   n = x.length; }
+        count = x.length-1;
+        for (int i = 0; i < x.length; i++){
+                a[i] = x[i];
+        }
+        }
+    
+    
     
     private void upBorderOfArray(){
         int nn = (int) (n*1.2);
@@ -102,7 +116,6 @@ public class xList implements ATD{
     
     @Override
     public void delFromStart() {
-        
         del(0);
     }
 
