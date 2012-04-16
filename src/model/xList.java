@@ -2,7 +2,7 @@
 package model;
 
 public class xList implements ATD{
-    private int count;
+    private int count = -1;
     private int n = 100;
     
     private int[] a = new int[n];
@@ -16,48 +16,34 @@ public class xList implements ATD{
         a = b;
         n = nn;
     }
+    
     @Override
     public void addToStart(int x) {
-        if( count == (n-1) )  upBorderOfArray();
-        
-        for (int i = count; i > 0 ; i--) {
-            a[i] = a[i-1];
-        }
-        a[0] = x;
-        
-        count++;
+        addToPos(0, x);
     }
-    @Override
-    public void delFromStart() {
-        
-        for (int i = 1; i < count ; i++) {
-            a[i-1] = a[i];
-        }
-                
-        count--;
-    }
+    
 
     @Override
     public void addToEnd(int x) {
-        if( count == (n-1) ) upBorderOfArray();
-        a[count] = x ;
-        count++;
+        addToPos(count+1, x);
     }
 
     @Override
     public void addToPos(int pos, int x) {
+        if (pos > count+1 || pos < 0 ) {       throw new ArrayIndexOutOfBoundsException();   }
+        count++;
         if( count == (n-1) )  upBorderOfArray();
         
         for (int i = count; i > pos ; i--) {
             a[i] = a[i-1];
         }
         a[pos] = x;
-        count++;
+        
     }
 
     @Override
     public int size() {
-        return count;
+        return count+1;
     }
 
     @Override
@@ -67,11 +53,13 @@ public class xList implements ATD{
 
     @Override
     public void set(int pos, int x) {
+        if (pos > count) {       throw new ArrayIndexOutOfBoundsException();   }
         a[pos] = x;
     }
 
     @Override
     public int get(int pos) {
+        if (pos > count) {       throw new ArrayIndexOutOfBoundsException();   }
         return a[pos];
     }
 
@@ -89,8 +77,8 @@ public class xList implements ATD{
 
     @Override
     public void sort() {
-        for (int i = 0; i < count-1 ; i++) 
-        {   for (int j = i+1; j < count; j++){
+        for (int i = 0; i < size()-1 ; i++) 
+        {   for (int j = i+1; j < size(); j++){
                 if(a[i] > a[j]) {  int c = a[i];  a[i] = a[j];   a[j] = c;  }
             }
         }
@@ -100,8 +88,8 @@ public class xList implements ATD{
     public boolean equals(Object ob){
         boolean res = true;
         int[] o = (int[])ob;
-        if(count!=o.length) return false;
-        for (int i = 0; i < count; i++) {
+        if(size()!=o.length) return false;
+        for (int i = 0; i < size(); i++) {
             if(a[i]!=o[i]) { res = false;  break; }
         }
         return res;
@@ -109,12 +97,21 @@ public class xList implements ATD{
 
     @Override
     public void delFromEnd() {
-        a[count] = 0;
-        count--;
+        del(count);
+    }
+    
+    @Override
+    public void delFromStart() {
+        
+        del(0);
     }
 
     @Override
     public void del(int pos) {
+        if ((pos > count) || (pos < 0) ) {
+            throw new ArrayIndexOutOfBoundsException();  
+        }
+        
         for (int i = pos; i < count ; i++) {
             a[i] = a[i+1];
         }
