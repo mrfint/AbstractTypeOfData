@@ -80,7 +80,7 @@ public class xList implements ATD{
     @Override
     public int find(int x) {
         int res = -1;
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < size(); i++) {
             if(a[i]==x) { 
                 res = i; 
                 break;
