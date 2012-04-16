@@ -20,7 +20,7 @@ public class ATDTest {
         int n = 110;
         
         for (int i = 0; i < n; i++) {
-            c.add(i);
+            c.addToEnd(i);
         }
         
         int[] b = new int[n];
@@ -34,7 +34,7 @@ public class ATDTest {
         int n = 5;
         
         for (int i = 0; i < n; i++) {
-            c.add(i);        
+            c.addToEnd(i);        
         }
         c.addToStart(100);
         
@@ -47,9 +47,9 @@ public class ATDTest {
         int n = 5;
         
         for (int i = 0; i < n; i++) {
-            c.add(i);        
+            c.addToEnd(i);        
         }
-        c.add(2,100);
+        c.addToPos(2,100);
         
         int[] b = new int[]{0, 1, 100, 2, 3, 4};
 
@@ -60,7 +60,7 @@ public class ATDTest {
         int n = 5;
         
         for (int i = 0; i < n; i++) {
-            c.add(i);        
+            c.addToEnd(i);        
         }
         c.delFromStart();
         
@@ -74,7 +74,7 @@ public class ATDTest {
         int n = 5;
         
         for (int i = 0; i < n; i++) {
-            c.add(i);        
+            c.addToEnd(i);        
         }
         c.delFromEnd();
         
@@ -88,7 +88,7 @@ public class ATDTest {
         int n = 5;
         
         for (int i = 0; i < n; i++) {
-            c.add(i);        
+            c.addToEnd(i);        
         }
         c.del(2);
         
@@ -102,7 +102,7 @@ public class ATDTest {
         int n = 5;
         
         for (int i = n-1; i >= 0; i--) {
-            c.add(i);  
+            c.addToEnd(i);  
         }
         c.sort();
 
@@ -116,7 +116,7 @@ public class ATDTest {
         int n = 5;
         
         for (int i = n-1; i >= 0; i--) {
-            c.add(i);  
+            c.addToEnd(i);  
         }
 
        assertEquals(0,  c.find(4));

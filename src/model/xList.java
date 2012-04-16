@@ -1,9 +1,9 @@
 
 package model;
 
-public class xList extends ATD{
+public class xList implements ATD{
+    private int count;
     private int n = 100;
-    private final int K = 20; // grow persent
     
     private int[] a = new int[n];
     
@@ -38,14 +38,14 @@ public class xList extends ATD{
     }
 
     @Override
-    public void add(int x) {
+    public void addToEnd(int x) {
         if( count == (n-1) ) upBorderOfArray();
         a[count] = x ;
         count++;
     }
 
     @Override
-    public void add(int pos, int x) {
+    public void addToPos(int pos, int x) {
         if( count == (n-1) )  upBorderOfArray();
         
         for (int i = count; i > pos ; i--) {
