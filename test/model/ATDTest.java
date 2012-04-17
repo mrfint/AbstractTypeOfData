@@ -24,7 +24,8 @@ public class ATDTest {
         Object[][] data = new Object[][] {
                         { new SimpleArrayList() }, 
                         { new FlowArrayList() },
-
+                        { new CycleArrayList() },
+                        { new OneWayLinkedList() },
        };
     return Arrays.asList(data);
     }
@@ -45,7 +46,6 @@ public class ATDTest {
     //******************************************** Test zero
     @Test
     public void testZeroSize(){
-        ATD c = new SimpleArrayList();
         assertEquals(0, c.size());
     }
     
@@ -91,7 +91,6 @@ public class ATDTest {
     @Test
     public void testOneGetZElement(){
        c.addToStart(10);
-       
        assertEquals(10, c.get(0));
     }
     @Test(expected=ArrayIndexOutOfBoundsException.class)
@@ -117,7 +116,7 @@ public class ATDTest {
     public void testOneAddToStart(){
        c.addToStart(10);
        c.addToStart(20);
-       
+
        assertEquals(20, c.get(0));
        assertEquals(10, c.get(1));
        
