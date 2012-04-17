@@ -1,26 +1,12 @@
 
 package model;
 
-public class xList implements ATD{
+public class SimpleArrayList implements ATD{
     private int count = -1;
     private int n = 100;
     
     private int[] a = new int[n];
 
-    public xList() {
-    }
-
-    
-    public xList(int[] x) {
-        if(x.length > n  ) {   n = x.length; }
-        count = x.length-1;
-        for (int i = 0; i < x.length; i++){
-                a[i] = x[i];
-        }
-        }
-    
-    
-    
     private void upBorderOfArray(){
         int nn = (int) (n*1.2);
         int[] b = new int[nn];
@@ -129,6 +115,15 @@ public class xList implements ATD{
             a[i] = a[i+1];
         }
         count--;
+    }
+
+    @Override
+    public void setArray(int[] x) {
+        if(x.length > n  ) {   n = x.length; a = new int[x.length]; }
+        count = x.length-1;
+        for (int i = 0; i < x.length; i++){
+                a[i] = x[i];
+        }
     }
 
 
