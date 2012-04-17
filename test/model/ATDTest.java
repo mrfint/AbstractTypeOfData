@@ -23,16 +23,17 @@ public class ATDTest {
     {
         Object[][] data = new Object[][] {
                         { new SimpleArrayList() }, 
-                     //   { new FlowArrayList() },
+                        { new FlowArrayList() },
 
        };
     return Arrays.asList(data);
     }
+
     
     @Before
-    public void setUp(){
+    public void setUp() throws InstantiationException, IllegalAccessException{
         
-        ATD c = new SimpleArrayList();
+        c = inst.getClass().newInstance();
        
         b = new int[]{0, 1, 2, 3, 4};
     }

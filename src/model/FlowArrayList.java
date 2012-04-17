@@ -2,40 +2,29 @@
 package model;
 
 public class FlowArrayList implements ATD{
-    private int n = 99;
+    private int n = 100;
     private int countLeft  = n/2+1;
     private int countRight = n/2;
     
     
     private int[] a = new int[n];
 
-    public FlowArrayList() {
-    }
-
-    
-    public FlowArrayList(int[] x) {
-        if(x.length > n  ) {   n = x.length; }
-        countLeft = x.length-1;
-        for (int i = 0; i < x.length; i++){
-                a[i] = x[i];
-        }
-        }
-    
-    
-    
     private void upBorderOfArray(){
-        int nn = (int) (n*1.2);
-        int[] b = new int[nn];
-        for (int i = 0; i < n; i++) {
-            b[i] = a[i];
+        int s = size();
+        int[] b = new int[size()];
+        
+        for (int i = countLeft; i < countLeft+size(); i++) {
+            b[i-countLeft] = a[i];
         }
-        a = b;
-        n = nn;
+        
+        n = (int) (n*1.2);
+        a = new int[n];
+        setArray(b);
     }
     
     @Override
     public void addToStart(int x) {
-        if((countLeft-1)==0) upBorderOfArray();
+        if ( countLeft-1 == -1 ) { upBorderOfArray();     }
         countLeft--;
         a[countLeft] = x;
     }
@@ -43,26 +32,33 @@ public class FlowArrayList implements ATD{
 
     @Override
     public void addToEnd(int x) {
-        if((countRight+1)==n-1) upBorderOfArray();
+        if ( countRight+1 == n ) { 
+            upBorderOfArray();     
+        }
         countRight++;
         a[countRight] = x;
     }
 
     @Override
     public void addToPos(int pos, int x) { 
-        if ( ( (countRight+1)==(n-1)) || ((countLeft-1)==0) ) upBorderOfArray();
-        if ( (pos > (countRight + 1)) || (pos < (countLeft -1 )) ) {
-            throw new ArrayIndexOutOfBoundsException();
+        if ( (pos >size()) || (pos < 0) ) {
+            throw new ArrayIndexOutOfBoundsException();  
         }
-        /*
-        count++;
-        if( count == (n-1) )  upBorderOfArray();
-        
-        for (int i = count; i > pos ; i--) {
+        if( (countLeft+pos)==0 || (countLeft+pos)==n-1 ) upBorderOfArray();
+        if (pos <= size()/2) {
+            for (int i = countLeft-1; i < countLeft+pos ; i++) {
+                a[i] = a[i+1];
+            }
+            countLeft--;
+        }
+        else
+        {
+           for (int i = countRight+1; i > countLeft+pos ; i--) {
             a[i] = a[i-1];
+            }
+           countRight++;
         }
-        a[pos] = x;
-        */
+        a[countLeft+pos] = x;
     }
 
     @Override
@@ -77,24 +73,24 @@ public class FlowArrayList implements ATD{
 
     @Override
     public void set(int pos, int x) {
-        if ( (pos > (countRight + 1)) || (pos < (countLeft -1 )) ) {
+        if ( (pos >=size()) || (pos < 0) ) {
             throw new ArrayIndexOutOfBoundsException();   
         }
-        a[pos] = x;
+        a[countLeft+pos] = x;
     }
 
     @Override
     public int get(int pos) {
-        if ( (pos > (countRight + 1)) || (pos < (countLeft -1 )) ) {
+        if ( (pos >=size()) || (pos < 0) ) {
             throw new ArrayIndexOutOfBoundsException();   
         }
-        return a[pos];
+        return a[countLeft+pos];
     }
 
     @Override
     public int find(int x) {
         int res = -1;
-        for (int i = 0; i < size(); i++) {
+        for (int i = countLeft; i <= size(); i++) {
             if(a[i]==x) { 
                 res = i; 
                 break;
@@ -105,7 +101,7 @@ public class FlowArrayList implements ATD{
 
     @Override
     public void sort() {
-        for (int i = 0; i < size()-1 ; i++) 
+        for (int i = countLeft; i < size()-1 ; i++) 
         {   for (int j = i+1; j < size(); j++){
                 if(a[i] > a[j]) {  int c = a[i];  a[i] = a[j];   a[j] = c;  }
             }
@@ -117,20 +113,20 @@ public class FlowArrayList implements ATD{
         boolean res = true;
         int[] o = (int[])ob;
         if(size()!=o.length) return false;
-        for (int i = 0; i < size(); i++) {
-            if(a[i]!=o[i]) { res = false;  break; }
+        for (int i = countLeft; i < size(); i++) {
+            if(a[i]!=o[i-countLeft]) { res = false;  break; }
         }
         return res;
     }
 
     @Override
     public void delFromEnd() {
-        del(countRight);
+        del(size()-1);
     }
     
     @Override
     public void delFromStart() {
-        del(countLeft);
+        del(0);
     }
 
     @Override
@@ -140,14 +136,14 @@ public class FlowArrayList implements ATD{
         }
         
         if (pos <= size()/2) {
-            for (int i = pos; i >= countLeft ; i--) {
+            for (int i = countLeft+pos; i >= countLeft ; i--) {
                 a[i] = a[i-1];
             }
-            countLeft--;
+            countLeft++;
         }
         else
         {
-           for (int i = pos; i <= countRight ; i++) {
+           for (int i = countLeft+pos; i <= countRight ; i++) {
             a[i] = a[i+1];
             }
            countRight--;
@@ -158,6 +154,8 @@ public class FlowArrayList implements ATD{
     @Override
     public void setArray(int[] x) {
         if(x.length > n  ) {   n = x.length; a = new int[x.length]; }
+        countLeft  = n/2+1;
+        countRight = n/2;
         
         for (int i = x.length/2; i >= 0; i--){
             countLeft--;    
