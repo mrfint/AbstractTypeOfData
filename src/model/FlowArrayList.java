@@ -90,9 +90,9 @@ public class FlowArrayList implements ATD{
     @Override
     public int find(int x) {
         int res = -1;
-        for (int i = countLeft; i <= size(); i++) {
+        for (int i = countLeft; i < countLeft+size(); i++) {
             if(a[i]==x) { 
-                res = i; 
+                res = i - countLeft; 
                 break;
             } 
         }
