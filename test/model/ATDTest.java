@@ -23,10 +23,11 @@ public class ATDTest {
         Object[][] data = new Object[][] {
                         { new SimpleArrayList()  }, 
                         { new FlowArrayList()    },
-   //                     { new CycleArrayList()   },
+                        { new CycleArrayList()   },
                         { new OneWayLinkedList() },
                         { new TWLinkedList() },
-       };
+                        { new CycleTWLinkedList() },
+        };
     return Arrays.asList(data);
     }
 
@@ -131,8 +132,7 @@ public class ATDTest {
     @Test
     public void testOneDelFromStart(){
        c.addToStart(10);
-       c.delFromStart();
-       c.toString();
+       c.delFromStart();;
        assertEquals(0, c.size());
     }
     @Test
@@ -151,6 +151,7 @@ public class ATDTest {
     public void testManySize(){
         int[] b = new int[]{0, 1, 2, 3, 4};
         c.setArray(b);
+
         assertEquals(b.length, c.size());
     }
     @Test
@@ -189,6 +190,7 @@ public class ATDTest {
        int[] b = new int[]{10, 0, 1, 2, 3, 4};
        
        assertTrue(c.equals(b));
+
        
     }
     @Test

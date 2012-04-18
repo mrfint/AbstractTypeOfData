@@ -1,60 +1,54 @@
 
 package model;
 
-
-
-public class TWLinkedList implements ATD{
+public class CycleTWLinkedList implements ATD{
     int length = 0;
     NodeTW first = null;
-    NodeTW last  = null;
 
     @Override
     public void addToStart(int x) {
         NodeTW temp = new NodeTW(x);
-        temp.setNext(first);
-        if( first != null ) {	 first.setPrev(temp);       }
         
-        first = temp;
-        if (last == null) {  	
-            last = temp;  
+        if( first == null ) {	 
+            first = temp; 
+            temp.setNext(temp);
+            temp.setPrev(temp);
         }
-        
+        else{
+            addNode(first.getPrev(), temp);
+            first = temp;
+        }
+                
         length++;
     }
 
     @Override
     public void addToEnd(int x) {
-        NodeTW temp = new NodeTW(x);
-        temp.setPrev(last);
-	if(last != null){       last.setNext(temp);          }
-	last = temp;
-		
-        if (first == null) {	first = temp;                }
-		
-	length++;
+        if (first == null){
+                addToStart(x);
+        }else{
+                NodeTW temp = first.getPrev();
+                NodeTW newNode = new NodeTW(x);
+                addNode(temp, newNode);
+
+                length++;
+        }
     }
 
     @Override
     public void addToPos(int pos, int x) {
         check(pos);
+        
         if(pos==0) addToStart(x);
         else{   
             if(pos==length){
                 addToEnd(x);
             }
             else
-            {
-                NodeTW temp = new NodeTW(x);
-                int count = 0;
-                NodeTW fnd = first;
-                while (count < pos) {
-                    fnd = fnd.getNext();
-                    count++;
-                }
-                fnd.getPrev().setNext(temp);
-                temp.setPrev(fnd.getPrev());
-                fnd.getNext().setPrev(temp);
-                temp.setNext(fnd);
+            {   
+                NodeTW prev = getNodeByPos(pos-1); 
+                addNode(prev, new NodeTW(x));
+
                 length++;
             }
 
@@ -64,15 +58,31 @@ public class TWLinkedList implements ATD{
     @Override
     public void delFromStart() {
         if(length==0) throw new ArrayIndexOutOfBoundsException();
-        first = first.getNext();
-        length--;
+        if (first.getPrev() == first) {
+			clear();
+		} else {
+			first.getNext().setPrev(first.getPrev());
+                        first.getPrev().setNext(first.getNext());
+			first = first.getNext();
+
+			length--;
+		}
+        
     }
 
     @Override
     public void delFromEnd() {
         if(length==0) throw new ArrayIndexOutOfBoundsException();
-        last = last.getPrev();
-        length--;
+        if (first.getPrev() == first) {
+                clear();
+        } else {
+                NodeTW prev = first.getPrev().getPrev();
+                first.getPrev().setPrev(prev);
+		prev.setNext(first);
+
+
+                length--;
+        }
     }
 
     @Override
@@ -106,31 +116,17 @@ public class TWLinkedList implements ATD{
     @Override
     public void clear() {
         first = null;
-        last  = null;
         length = 0;
     }
 
     @Override
     public void set(int pos, int x) {
-        check(pos);
-        NodeTW fnd = first;
-        int count = 1;
-        while (count <= pos) {
-            fnd = fnd.getNext();
-        }
-        fnd.setValue(x);
+        getNodeByPos(pos).setValue(x);
     }
 
     @Override
     public int get(int pos) {
-        check(pos);
-        NodeTW fnd = first;
-        int count = 0;
-        while (count < pos) {
-            fnd = fnd.getNext();
-            count++;
-        }
-        return fnd.getValue();
+        return  getNodeByPos(pos).getValue();
     }
 
     @Override
@@ -154,19 +150,13 @@ public class TWLinkedList implements ATD{
 
     @Override
     public void setArray(int[] a) {
-        clear();
-        NodeTW prevNode = new NodeTW(a[0]);
-        length++;
-        first = prevNode;
-        
-        for (int i = 1; i < a.length; i++){
-                NodeTW newNode = new NodeTW(a[i]);
-                length++;
-                prevNode.setNext(newNode);
-                newNode.setPrev(prevNode);
-                prevNode = newNode;
+        if (a.length == 0){
+                return;
         }
-        last = prevNode;
+        clear();
+        for (int i = 0; i < a.length; i++){
+                addToEnd(a[i]);
+        }
     }
     
      public boolean equals(Object ob){
@@ -204,42 +194,22 @@ public class TWLinkedList implements ATD{
         if( (pos < 0) || (pos>=length) ) throw new ArrayIndexOutOfBoundsException();
     }
 
+    private void addNode(NodeTW prev, NodeTW next) {
+        next.setPrev(prev);
+        next.setNext(prev.getNext());
+        prev.setNext(next);
+        next.getNext().setPrev(next);
+    }
+
+    private NodeTW getNodeByPos(int pos) {
+        check(pos);
+        NodeTW fnd = first;
+        int count = 0;
+        while (count < pos) {
+            fnd = fnd.getNext();
+            count++;
+        }
+        return fnd;
+    }
+    
 }
-    class NodeTW{
-        private int value;
-        
-        private NodeTW next;
-        private NodeTW prev;
-
-    public NodeTW(int value) {
-        this.value = value;
-    }
-
-    public NodeTW getNext() {
-        return next;
-    }
-
-    public void setNext(NodeTW next) {
-        this.next = next;
-    }
-
-    public NodeTW getPrev() {
-        return prev;
-    }
-
-    public void setPrev(NodeTW prev) {
-        this.prev = prev;
-    }
-
-    
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    
-        
-  }

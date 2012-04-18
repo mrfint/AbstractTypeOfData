@@ -3,7 +3,7 @@ package model;
 
 public class FlowArrayList implements ATD{
     private int n = 100;
-    private int countLeft  = n/2+1;
+    private int countLeft  = n/2;
     private int countRight = n/2;
     
     
@@ -24,66 +24,55 @@ public class FlowArrayList implements ATD{
     
     @Override
     public void addToStart(int x) {
-        if ( countLeft-1 == -1 ) { upBorderOfArray();     }
-        countLeft--;
-        a[countLeft] = x;
+        checkBorders();
+        a[--countLeft] = x;
     }
     
 
     @Override
     public void addToEnd(int x) {
-        if ( countRight+1 == n ) { 
-            upBorderOfArray();     
-        }
-        countRight++;
-        a[countRight] = x;
+        checkBorders();
+        a[countRight++] = x;
     }
 
     @Override
     public void addToPos(int pos, int x) { 
-        if ( (pos >size()) || (pos < 0) ) {
-            throw new ArrayIndexOutOfBoundsException();  
-        }
-        if( (countLeft+pos)==0 || (countLeft+pos)==n-1 ) upBorderOfArray();
+        check(pos);
+        checkBorders();
+        
         if (pos <= size()/2) {
-            for (int i = countLeft-1; i < countLeft+pos ; i++) {
-                a[i] = a[i+1];
-            }
+            for (int i = countLeft; i < countLeft+pos ; i++) {  a[i] = a[i+1]; }
             countLeft--;
         }
-        else
-        {
-           for (int i = countRight+1; i > countLeft+pos ; i--) {
-            a[i] = a[i-1];
-            }
-           countRight++;
+        else{
+            for (int i = countRight+1; i > countLeft+pos ; i--){ a[i] = a[i-1];}
+            countRight++;
         }
         a[countLeft+pos] = x;
     }
 
     @Override
     public int size() {
-        return countRight-countLeft+1;
+        return countRight-countLeft;
     }
 
     @Override
     public void clear() {
         a = new int[100];
+        countLeft  = n/2;
+        countRight = n/2;
+        
     }
 
     @Override
     public void set(int pos, int x) {
-        if ( (pos >=size()) || (pos < 0) ) {
-            throw new ArrayIndexOutOfBoundsException();   
-        }
+        check(pos);
         a[countLeft+pos] = x;
     }
 
     @Override
     public int get(int pos) {
-        if ( (pos >=size()) || (pos < 0) ) {
-            throw new ArrayIndexOutOfBoundsException();   
-        }
+        check(pos);
         return a[countLeft+pos];
     }
 
@@ -131,21 +120,14 @@ public class FlowArrayList implements ATD{
 
     @Override
     public void del(int pos) {
-        if ( (pos >=size()) || (pos < 0) ) {
-            throw new ArrayIndexOutOfBoundsException();  
-        }
+        check(pos);
         
         if (pos <= size()/2) {
-            for (int i = countLeft+pos; i >= countLeft ; i--) {
-                a[i] = a[i-1];
-            }
+            for (int i = countLeft+pos; i >= countLeft ; i--) { a[i] = a[i-1]; }
             countLeft++;
         }
-        else
-        {
-           for (int i = countLeft+pos; i <= countRight ; i++) {
-            a[i] = a[i+1];
-            }
+        else{
+           for (int i = countLeft+pos; i <= countRight ; i++) { a[i] = a[i+1]; }
            countRight--;
         }
 
@@ -153,26 +135,29 @@ public class FlowArrayList implements ATD{
 
     @Override
     public void setArray(int[] x) {
+        clear();
         if(x.length > n  ) {   n = x.length; a = new int[x.length]; }
-        countLeft  = n/2+1;
-        countRight = n/2;
-        
-        for (int i = x.length/2; i >= 0; i--){
-            countLeft--;    
-            a[countLeft] = x[i];
-        }
-        for (int i = x.length/2+1; i < x.length; i++){
-            countRight++;    
-            a[countRight] = x[i];
-        }
+       
+        for (int i = x.length/2; i >= 0; i--){             addToStart(x[i]);  }
+        for (int i = x.length/2+1; i < x.length; i++){     addToEnd(x[i]);    }
     }
     @Override
     public String toString(){ 
         String res="";
-        for (int i = 0; i < n; i++) {
+        for (int i = countLeft; i < countLeft+size(); i++) {
             System.out.print(" "+a[i]);
         }
         return res;
+    }
+
+    private void check(int pos) {
+        if ( (pos >= size()) || (pos < 0) ) {
+            throw new ArrayIndexOutOfBoundsException();  
+        }
+    }
+
+    private void checkBorders() {
+        if( (countLeft-1)==0 || (countLeft+1)==n-1 ) upBorderOfArray();
     }
 
 }
