@@ -45,12 +45,10 @@ public class TWLinkedList implements ATD{
             else
             {
                 NodeTW temp = new NodeTW(x);
-                int count = 0;
                 NodeTW fnd = first;
-                while (count < pos) {
-                    fnd = fnd.getNext();
-                    count++;
-                }
+                
+                fnd = getNodeByPos(pos);
+                
                 fnd.getPrev().setNext(temp);
                 temp.setPrev(fnd.getPrev());
                 fnd.getNext().setPrev(temp);
@@ -86,11 +84,8 @@ public class TWLinkedList implements ATD{
             }
             else
             {
-                int count = 0;
-                while (count < pos) {
-                    fnd = fnd.getNext();
-                    count++;
-                }
+                fnd = getNodeByPos(pos);
+                
                 fnd.getPrev().setNext(fnd.getNext());
                 fnd.getNext().setPrev(fnd.getPrev());
                 length--;
@@ -113,24 +108,13 @@ public class TWLinkedList implements ATD{
     @Override
     public void set(int pos, int x) {
         check(pos);
-        NodeTW fnd = first;
-        int count = 1;
-        while (count <= pos) {
-            fnd = fnd.getNext();
-        }
-        fnd.setValue(x);
+        getNodeByPos(pos).setValue(x);
     }
 
     @Override
     public int get(int pos) {
         check(pos);
-        NodeTW fnd = first;
-        int count = 0;
-        while (count < pos) {
-            fnd = fnd.getNext();
-            count++;
-        }
-        return fnd.getValue();
+        return getNodeByPos(pos).getValue();
     }
 
     @Override
@@ -202,6 +186,17 @@ public class TWLinkedList implements ATD{
 
     private void check(int pos) {
         if( (pos < 0) || (pos>=length) ) throw new ArrayIndexOutOfBoundsException();
+    }
+    
+    private NodeTW getNodeByPos(int pos) {
+        check(pos);
+        NodeTW fnd = first;
+        int count = 0;
+        while (count < pos) {
+            fnd = fnd.getNext();
+            count++;
+        }
+        return fnd;
     }
 
 }

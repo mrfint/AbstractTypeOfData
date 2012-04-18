@@ -53,7 +53,7 @@ public class OneWayLinkedList implements
     @Override
     public void delFromStart() {
         if ( root == null){   throw new ArrayIndexOutOfBoundsException();      }
-        root = getNextNode(root);
+        root = root.getNext();
         length--;
     }
 
@@ -61,14 +61,9 @@ public class OneWayLinkedList implements
     public void delFromEnd() {
         if ( root == null){   throw new ArrayIndexOutOfBoundsException();      }
         
-        if (root.getNext() == null) {
-                root = null;
-        } else {
-                Node prev = root;
-
-                while (getNextNode(prev) != null) {
-                        prev = prev.getNext();
-                }
+        if (root.getNext() == null)         {              root = null;        } 
+        else {
+                Node prev = getNodeByPos(length-1);
                 prev.setNext(null);
         }
         length--;
@@ -77,13 +72,12 @@ public class OneWayLinkedList implements
     @Override
     public void del(int pos) {
         
-        if (pos == 0){
-                root = root.getNext();
-        }
-        else{
-                Node prev = getNodeByPos(pos-1); 
-                prev.setNext(getNextNode(getNextNode(prev)));
-        }
+        if   (pos == 0){       delFromStart(); }
+        else if(pos == length) delFromEnd();
+             else{
+                  Node prev = getNodeByPos(pos-1); 
+                  prev.setNext(prev.getNext().getNext());
+             }
 
         length--;
     }
@@ -101,14 +95,13 @@ public class OneWayLinkedList implements
 
     @Override
     public void set(int pos, int x) {
-         if(pos >= length || pos < 0) throw new ArrayIndexOutOfBoundsException();
-        Node current = getNodeByPos(pos);
-	current.setData(x);
+        check(pos);
+        getNodeByPos(pos).setData(x);
     }
 
     @Override
     public int get(int pos) {
-        if(pos >= length) throw new ArrayIndexOutOfBoundsException();
+        check(pos);
         return getNodeByPos(pos).getData();
     }
 
@@ -174,35 +167,24 @@ public class OneWayLinkedList implements
         return res;
     } 
     
-    private Node getNextNode(Node currNode) {
-        Node res = null;
-        if (currNode != null){
-                res = currNode.getNext();
-        }
-        return res;
-    }
 	
-    private Node getNodeByPos(int pos) {
-            Node res = root;	
-
-            int i = 0;
-            while (res != null) 
-            {
-                    if (i == pos) {		break;			}
-                    res = res.getNext();
-                    i++;
-            }
-
-            if (i < pos || res == null) {
-                    throw new ArrayIndexOutOfBoundsException();
-            }
-
-            return res;
+    private void check(int pos) {
+        if( (pos < 0) || (pos>=length) ) throw new ArrayIndexOutOfBoundsException();
     }
-
+    
+    private Node getNodeByPos(int pos) {
+        check(pos);
+        Node fnd = root;
+        int count = 0;
+        while (count < pos) {
+            fnd = fnd.getNext();
+            count++;
+        }
+        return fnd;
+    }
 
 }
-        class Node{
+     class Node{
             
             private int data;
             private Node next;
