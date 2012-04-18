@@ -50,6 +50,9 @@ public class CycleArrayList implements ATD{
         if ( (pos >size()) || (pos < 0) ) {
             throw new ArrayIndexOutOfBoundsException();  
         }
+        if ( countRight == countLeft ) {
+            upBorderOfArray();     
+        }
         if( (countLeft+pos)==0 || (countLeft+pos)==n-1 ) upBorderOfArray();
         if (pos <= size()/2) {
             for (int i = countLeft-1; i < countLeft+pos ; i++) {
@@ -163,8 +166,8 @@ public class CycleArrayList implements ATD{
     @Override
     public void setArray(int[] x) {
         if(x.length > n  ) {   n = x.length; a = new int[x.length]; }
-        int countLeft  = n-1;
-        int countRight = 0;
+        countLeft  = n-1;
+        countRight = 0;
         
         for (int i = 0; i < x.length; i++) {
             a[countRight] = x[i];

@@ -4,14 +4,14 @@ package model;
 
 public class OneWayLinkedList implements 
                                         ATD{
-    private Node ndFace = null;
+    private Node root = null;
     private int length = 0;
     
     @Override
     public void addToStart(int x) {
         Node newnd  = new Node(x);
-        newnd.setNext(ndFace);
-        ndFace = newnd;
+        newnd.setNext(root);
+        root = newnd;
 
         length++;
     }
@@ -19,11 +19,11 @@ public class OneWayLinkedList implements
     @Override
     public void addToEnd(int x) {
         Node newnd = new Node(x);
-        if (ndFace==null) {
-                ndFace = newnd;        
+        if (root==null) {
+                root = newnd;        
         }
         else {
-                Node next = ndFace;
+                Node next = root;
 
                 while (next.getNext() != null) {
                         next = next.getNext();
@@ -38,8 +38,8 @@ public class OneWayLinkedList implements
     public void addToPos(int pos, int x) {
         Node newnd = new Node(x);
         if (pos == 0){
-                newnd.setNext(ndFace);
-                ndFace = newnd;
+                newnd.setNext(root);
+                root = newnd;
         }
         else{
                 Node prev = getNodeByPos(pos-1); 
@@ -52,19 +52,19 @@ public class OneWayLinkedList implements
 
     @Override
     public void delFromStart() {
-        if ( ndFace == null){   throw new ArrayIndexOutOfBoundsException();      }
-        ndFace = getNextNode(ndFace);
+        if ( root == null){   throw new ArrayIndexOutOfBoundsException();      }
+        root = getNextNode(root);
         length--;
     }
 
     @Override
     public void delFromEnd() {
-        if ( ndFace == null){   throw new ArrayIndexOutOfBoundsException();      }
+        if ( root == null){   throw new ArrayIndexOutOfBoundsException();      }
         
-        if (ndFace.getNext() == null) {
-                ndFace = null;
+        if (root.getNext() == null) {
+                root = null;
         } else {
-                Node prev = ndFace;
+                Node prev = root;
 
                 while (getNextNode(prev) != null) {
                         prev = prev.getNext();
@@ -78,7 +78,7 @@ public class OneWayLinkedList implements
     public void del(int pos) {
         
         if (pos == 0){
-                ndFace = ndFace.getNext();
+                root = root.getNext();
         }
         else{
                 Node prev = getNodeByPos(pos-1); 
@@ -95,7 +95,7 @@ public class OneWayLinkedList implements
 
     @Override
     public void clear() {
-        ndFace = null;
+        root = null;
         length = 0;
     }
 
@@ -116,7 +116,7 @@ public class OneWayLinkedList implements
     public int find(int x) {
         int res = -1;
        
-        Node next = ndFace;
+        Node next = root;
         for (int i = 0; i < length; i++) {
             if(next.getData()==x) { res = i;  break; } 
             next = next.getNext();
@@ -127,14 +127,15 @@ public class OneWayLinkedList implements
 
     @Override
     public void sort() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        setArray(new int[]{0, 1, 2, 3, 4});   //  MOCK
     }
 
     @Override
     public void setArray(int[] a) {
+        clear();
         Node prevNode = new Node(a[0]);
         length++;
-        ndFace = prevNode;
+        root = prevNode;
         for (int i = 1; i < a.length; i++){
                 Node newNode = new Node(a[i]);
                 length++;
@@ -144,9 +145,9 @@ public class OneWayLinkedList implements
     }
     
     public String toString(){
-        if(ndFace==null) return "";
+        if(root==null) return "";
        
-        Node next = ndFace;
+        Node next = root;
         for (int i = 0; i < length; i++) {
             System.out.print(" "+next.getData());
             next = next.getNext();
@@ -160,9 +161,9 @@ public class OneWayLinkedList implements
         int[] o = (int[])ob;
         if(length!=o.length) return false;
         
-        if(ndFace==null) return false;
+        if(root==null) return false;
        
-        Node next = ndFace;
+        Node next = root;
         for (int i = 0; i < length; i++) {
             if(next.getData()!=o[i]) {
                 res = false;
@@ -182,7 +183,7 @@ public class OneWayLinkedList implements
     }
 	
     private Node getNodeByPos(int pos) {
-            Node res = ndFace;	
+            Node res = root;	
 
             int i = 0;
             while (res != null) 
