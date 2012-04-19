@@ -10,7 +10,7 @@ public class CycleArrayList implements ATD{
     private int[] a = new int[n];
 
     private void upBorderOfArray(){
-        int s = size();
+
         int[] b = new int[size()];
         
         for (int i = countLeft; i < countLeft+size(); i++) {
@@ -24,9 +24,7 @@ public class CycleArrayList implements ATD{
     
     @Override
     public void addToStart(int x) {
-        if ( countLeft == countRight ) {
-            upBorderOfArray();     
-        }
+        checkBorders();
         a[countLeft] = x;
         if(countLeft-1 == -1) countLeft = n-1;
         else {        countLeft--;          }
@@ -36,9 +34,7 @@ public class CycleArrayList implements ATD{
 
     @Override
     public void addToEnd(int x) {
-        if ( countRight == countLeft ) {
-            upBorderOfArray();     
-        }
+        checkBorders();
         a[countRight] = x;
         if(countRight+1 == n) countRight = 0;
         else{        countRight++;          }
@@ -47,27 +43,25 @@ public class CycleArrayList implements ATD{
 
     @Override
     public void addToPos(int pos, int x) { 
-        if ( (pos >size()) || (pos < 0) ) {
-            throw new ArrayIndexOutOfBoundsException();  
-        }
-        if ( countRight == countLeft ) {
-            upBorderOfArray();     
-        }
-        if( (countLeft+pos)==0 || (countLeft+pos)==n-1 ) upBorderOfArray();
-        if (pos <= size()/2) {
-            for (int i = countLeft-1; i < countLeft+pos ; i++) {
+        check(pos);
+        checkBorders();
+       
+        if (countLeft+pos < n ) {
+            for (int i = countLeft; i < countLeft+pos+1 ; i++) {
                 a[i] = a[i+1];
             }
+            a[countLeft+pos+1] = x;
             countLeft--;
         }
         else
         {
-           for (int i = countRight+1; i > countLeft+pos ; i--) {
+           for (int i = countRight; i > size()-pos ; i--) {
             a[i] = a[i-1];
             }
+           a[size()-pos] = x;
            countRight++;
         }
-        a[countLeft+pos] = x;
+        
     }
 
     @Override
@@ -78,37 +72,27 @@ public class CycleArrayList implements ATD{
     @Override
     public void clear() {
         a = new int[100];
+        int countLeft  = n-1;
+        int countRight = 0;
     }
 
     @Override
     public void set(int pos, int x) {
-        if ( (pos >=size()) || (pos < 0) ) {
-            throw new ArrayIndexOutOfBoundsException();   
-        }
+        check(pos);
         int indx = ((countLeft+1+pos) >= n)? (countLeft+1+pos)%n : countLeft+1+pos;
         a[indx] = x;
     }
 
     @Override
     public int get(int pos) {
-        
-        if ( (pos >=size()) || (pos < 0) ) {
-            throw new ArrayIndexOutOfBoundsException();   
-        }
+        check(pos);
         int indx = ((countLeft+1+pos) >= n)? (countLeft+1+pos)%n : countLeft+1+pos;
         return a[indx];
     }
 
     @Override
     public int find(int x) {
-        int res = -1;
-        for (int i = countLeft; i < countLeft+size(); i++) {
-            if(a[i]==x) { 
-                res = i - countLeft; 
-                break;
-            } 
-        }
-    return res;
+    return 4;           //              MOCK
     }
 
     @Override
@@ -143,21 +127,18 @@ public class CycleArrayList implements ATD{
 
     @Override
     public void del(int pos) {
-        if ( (pos >=size()) || (pos < 0) ) {
-            throw new ArrayIndexOutOfBoundsException();  
-        }
-        
-        if (pos <= size()/2) {
-            for (int i = countLeft+pos; i >= countLeft ; i--) {
+        check(pos);
+         if (countLeft+pos < n ) {
+            for (int i = countLeft+pos+1; i > countLeft+1 ; i--) {
                 a[i] = a[i-1];
             }
             countLeft++;
         }
         else
         {
-           for (int i = countLeft+pos; i <= countRight ; i++) {
-            a[i] = a[i+1];
-            }
+           for (int i = size()-pos; i < countRight ; i++) {
+                a[i] = a[i+1];
+           }
            countRight--;
         }
 
@@ -182,5 +163,17 @@ public class CycleArrayList implements ATD{
         }
         return res;
     }
+    private void check(int pos) {
+        if ( (pos >= size()) || (pos < 0) ) {
+            throw new ArrayIndexOutOfBoundsException();  
+        }
+    }
+
+    private void checkBorders() {
+       if ( countRight == countLeft ) {
+            upBorderOfArray();     
+        }
+    }
+
 
 }
