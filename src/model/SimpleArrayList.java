@@ -49,6 +49,7 @@ public class SimpleArrayList implements ATD{
     @Override
     public void clear() {
         a = new int[100];
+        count=0;
     }
 
     @Override
@@ -119,12 +120,34 @@ public class SimpleArrayList implements ATD{
 
     @Override
     public void setArray(int[] x) {
+        clear();
         if(x.length > n  ) {   n = x.length; a = new int[x.length]; }
         count = x.length-1;
         for (int i = 0; i < x.length; i++){
                 a[i] = x[i];
         }
     }
+    @Override
+    public int[] toArray() {
+        if(size()==0) return null;
+        
+        int[] res = new int[size()];
+        for (int i = 0; i <= count; i++) {
+            res[i] = a[i];
+        }
+       
+        return res;
+    }
+    
+    @Override
+    public String toString() {
+        if(size()==0) return "";
 
+        for (int i = 0; i <= count; i++) {
+            System.out.print(" "+a[i]);
+        }
+       
+        return "";
+    }
 
 }

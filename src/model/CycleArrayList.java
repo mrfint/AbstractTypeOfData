@@ -2,7 +2,7 @@
 package model;
 
 public class CycleArrayList implements ATD{
-    private int n = 10;
+    private int n = 102;
     private int countLeft  = n-1;
     private int countRight = 0;
     
@@ -105,6 +105,19 @@ public class CycleArrayList implements ATD{
 
     }
     
+    @Override
+    public int[] toArray() {
+        int[] res = new int[size()];
+        int counter = 0;
+        for (int i = countLeft+1; i < n; i++) {
+            res[counter++] = a[i];
+        }
+        for (int i = 0; i < countRight; i++) {
+            res[counter++] = a[i];
+        }
+        return res;
+    }
+    
     public boolean equals(Object ob){
         boolean res = true;
         int[] o = (int[])ob;
@@ -174,6 +187,5 @@ public class CycleArrayList implements ATD{
             upBorderOfArray();     
         }
     }
-
 
 }

@@ -244,9 +244,8 @@ public class ATDTest {
     }
     @Test
     public void testManyEquals() {
-        int[] b = new int[]{0, 1, 2, 3, 4};
-        c.setArray(b);
-        assertTrue(c.equals(b));
+        c.setArray(new int[]{0, 1, 2, 3, 4});
+        assertArrayEquals(new int[]{0, 1, 2, 3, 4}, c.toArray());
     }
     
     @Test

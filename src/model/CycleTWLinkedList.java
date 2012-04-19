@@ -159,6 +159,19 @@ public class CycleTWLinkedList implements ATD{
         }
     }
     
+    @Override
+    public int[] toArray() {
+        int[] res = new int[length];
+        int counter = 0;
+        if(first!=null){
+            NodeTW next = first;
+            for (int i = 0; i < length; i++) {
+                res[counter++] = next.getValue();
+                next = next.getNext();
+            }
+        }
+        return res;
+    }
      public boolean equals(Object ob){
         boolean res = true;
         int[] o = (int[])ob;

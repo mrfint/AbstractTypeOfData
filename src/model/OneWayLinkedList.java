@@ -136,7 +136,19 @@ public class OneWayLinkedList implements
                 prevNode = newNode;
         }
     }
-    
+    @Override
+    public int[] toArray() {
+        int[] res = new int[length];
+        int counter = 0;
+        if(root!=null){
+            Node next = root;
+            for (int i = 0; i < length; i++) {
+                res[counter++] = next.getData();
+                next = next.getNext();
+            }
+        }
+        return res;
+    }
     public String toString(){
         if(root==null) return "";
        

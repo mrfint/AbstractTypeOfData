@@ -14,5 +14,6 @@ interface ATD {
     int  get(int pos);
     int  find(int x);
     void sort();
-    void setArray(int[] a);
+    void  setArray(int[] a);
+    int[] toArray();
 }

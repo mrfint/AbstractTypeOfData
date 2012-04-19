@@ -2,7 +2,7 @@
 package model;
 
 public class FlowArrayList implements ATD{
-    private int n = 100;
+    private int n = 102;
     private int countLeft  = n/2;
     private int countRight = n/2;
     
@@ -136,10 +136,20 @@ public class FlowArrayList implements ATD{
     @Override
     public void setArray(int[] x) {
         clear();
-        if(x.length > n  ) {   n = x.length; a = new int[x.length]; }
+        if(x.length >= n  ) {   n =  (int) (x.length*1.2); a = new int[n]; }
        
         for (int i = x.length/2; i >= 0; i--){             addToStart(x[i]);  }
         for (int i = x.length/2+1; i < x.length; i++){     addToEnd(x[i]);    }
+    }
+    @Override
+    public int[] toArray() {
+        int[] res = new int[size()];
+        int counter = 0;
+        for (int i = countLeft; i < countRight; i++) {
+            res[counter++] = a[i];
+        }
+       
+        return res;
     }
     @Override
     public String toString(){ 
