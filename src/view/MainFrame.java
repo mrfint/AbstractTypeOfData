@@ -46,8 +46,9 @@ public class MainFrame extends JFrame{
         contentPane.setLayout(new BorderLayout());
         
         JPanel grid = new JPanel( new GridLayout(10, 0, 0, 10) );
+        model.initMass();
         for (int i = 0; i < 7; i++) {
-            xPanel xpanel = new xPanel(model);
+            xPanel xpanel = new xPanel(i,model);
             xpanel.initMass();
             
             grid.add(xpanel);

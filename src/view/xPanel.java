@@ -16,17 +16,20 @@ public class xPanel extends JPanel{
     private int khRect;
     private int wRect;
     private final Model model;
-
-    public xPanel(Model model) {
+    private int type;
+    public xPanel(int type, Model model) {
         super(new FlowLayout());
+        this.type  = type;
         this.model = model;
+        
         setBounds(0, 0, 300, 70);
         setPreferredSize(new Dimension(300, 65));
+       
         setBorder(BorderFactory.createBevelBorder(1));
     }
     public void initMass()
     {
-        this.a = model.getMass();
+        this.a = model.getMass(type);
         khRect = getHeight()/model.getH();        
         wRect = getWidth()/a.length;
         
@@ -36,7 +39,7 @@ public class xPanel extends JPanel{
     
     public void getMass()
     {
-        this.a = model.getMass();
+        this.a = model.getMass(type);
         repaint();
         
     }
@@ -52,4 +55,5 @@ public class xPanel extends JPanel{
             g.drawRect(i*wRect, getHeight()-khRect*a[i], wRect, khRect*a[i]);
         }
     }
+    
 }
