@@ -1,20 +1,24 @@
 
 package controller;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JPanel;
 import model.Model;
-import utils.BubbleSort;
-import utils.Sorter;
+import utils.*;
 import view.MainFrame;
+import view.xPanel;
 
 public class Controller {
-        private MainFrame mf;
+    private MainFrame mf;
     private Model  model;
+    private FactorySorter factSorter = null;
 
     public Controller(MainFrame mf, Model model) {
         this.mf = mf;
         this.model = model;
+        factSorter = new FactorySorter();
         mf.addBtnsListeners(initButtonsListeners());
     }
 
@@ -23,19 +27,25 @@ public class Controller {
           @Override
             public void actionPerformed(ActionEvent e) {
                 model.initMass();
-                mf.refreshMass();
+                 JPanel grid = (JPanel) mf.getJpFace().getComponent(0);
+                for (int i = 0; i < grid.getComponentCount(); i++) 
+                {   xPanel comp = (xPanel)grid.getComponent(i);
+                    comp.initMass();
+                }      
+                
             }
         };
         ActionListener l2 = new ActionListener(){
-
-            @Override
+           @Override
             public void actionPerformed(ActionEvent e) {
-                Sorter srt = new BubbleSort(model.getMass(0), mf);
-                
-                Thread t1 = new Thread(srt);
-                t1.start();
+                JPanel grid = (JPanel) mf.getJpFace().getComponent(0);
+                for (int i = 0; i < grid.getComponentCount(); i++) 
+                {   xPanel comp = (xPanel)grid.getComponent(i);
+                    Sorter srt = factSorter.getInstance(comp);
+                    Thread t = new Thread(srt);
+                    t.start();
+                }  
             }
-            
         };
 
         return new ActionListener[]{l1,l2}; 

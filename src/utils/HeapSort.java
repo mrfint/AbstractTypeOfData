@@ -1,53 +1,59 @@
 
 package utils;
 
-public class HeapSort
- {
-    public HeapSort(int[] anArray)
-    {
-       a = anArray;
+import java.awt.Component;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import view.xPanel;
+
+public class HeapSort extends Sorter {
+    public HeapSort(int[] a) {
+       super(a);
+    }
+    public HeapSort(xPanel xpan) {
+        super(xpan);
     }
 
-    public void sort()
-    {
-       sort( a.length - 1 );
+    @Override
+    public void sort() {
+       mergeSort( a.length - 1 );
     }
  
-    public void sort( int end )
-   {
-       for ( int i = end / 2; i >= 1; i-- )         fixHeap( i, end, a[i] );
-       
-       for ( int i = end; i > 1; i-- )
-       {
-          swap( 1, i );
- 
-          fixHeap( 1, i - 1, a[1] );
-       }
+    private void mergeSort( int end )
+    {
+        int l = a.length;
+        if (l == 0){
+           return;
+        }
+
+        rearrange(a, l);
+
+        while(l > 1){
+                swap( 0,l-1);
+                l--;
+                rearrange(a, l);
+        }
+        
     }
 
-    private void fixHeap( int root, int end,
-                          int key )
-    {
-       int child = 2 * root;      // left child
-       
-       if ( child < end && a[child] < a[child + 1] )
-          child++;               // right child is larger
+    private void rearrange(int a[], int to){
+        int mid = to/2-1;   int c;
+        for (int i = mid; i >=0; i--){
 
-       if ( child <= end && key < a[child] )
-       {
-          a[root] = a[child];
-          fixHeap( child, end, key );
-       }
-       else
-          a[root] = key;
+                int top =  a[i];
+                int el1 =  a[i*2];
+                int el2 =  a[i*2+1];
+
+                if (el2 > el1){ //el2 is bigger than el1
+                        if (top<el2){                                
+                                swap(i, i*2+1);
+                        }
+                }else{
+                        if (top<el1){
+                                swap(i, i*2);
+                        }
+                }
+        }
     }
- 
-   private void swap(int i, int j)
-    {
-       int temp = a[i];
-      a[i] = a[j];
-      a[j] = temp;
-    }
- 
-    private int[] a;
+    
  }

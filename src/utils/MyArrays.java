@@ -34,20 +34,20 @@ public class MyArrays {
        }
     }
     
-    public static void sortShell(int[] items){
-        int i, j, k, h, m=0, b=items.length;
+    public static void sortShell(int[] a){
+        int i, j, k, h, m=0, b=a.length;
         int[] d =  { 1, 4, 10, 23, 57, 145 };
         while (d[m] < b) ++m;
         while (--m >= 0){
             k = d[m];
             for (i=k; i<b; i++){     // k-сортировка
                 j=i;
-                h=items[i];
-                while ((j >= k) && (items[j-k] > h)){  
-                    items[j]=items[j-k];
+                h=a[i];
+                while ((j >= k) && (a[j-k] > h)){  
+                    a[j]=a[j-k];
                     j =  j-k;
                 }
-                items[j] = h;
+                a[j] = h;
             }
         }
      

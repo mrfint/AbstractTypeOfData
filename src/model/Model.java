@@ -2,10 +2,9 @@
 package model;
 
 public class Model {
-    private final int nSORTERS = 7;
-    private int n = 20;
+    private int n = 100;
     private int h = 10;
-    private int[][] a = null;
+    private int[] a = null;
 
     public Model() {
         initMass();
@@ -13,17 +12,12 @@ public class Model {
     
     
     public void initMass(){
-        int[] tmp = new int[n];
-        for(int j=0; j<n; j++) tmp[j]=(int) (Math.random()*h);
-        
-        a = new int[nSORTERS][n];
-        for (int i = 0; i < nSORTERS; i++) {
-            a[i] = tmp.clone();
-        }      
-        
+        a = new int[n];
+        for(int i=0; i<n; i++) a[i]=(int) (Math.random()*h);
+
     }
-    public int[] getMass(int type){
-        return a[type];
+    public int[] getMass(){
+        return a;
     }
 
     public int getH() {

@@ -4,33 +4,26 @@ package utils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import view.MainFrame;
+import view.xPanel;
 
 public class BubbleSort extends Sorter{
-    private MainFrame mf = null;
 
     public BubbleSort(int[] a) {
         super(a);
     }
-    public BubbleSort(int[] a, MainFrame mf) {
-        super(a);
-        this.mf = mf;
+    public BubbleSort(xPanel xpan) {
+        super(xpan);
     }
     
     @Override
-    public void run() {
-        int c;
+    public void sort() {       
         for (int i = 0; i < a.length; i++) 
         {   
-            try 
-            {
                 for (int j = i+1; j < a.length; j++){
-                    if(a[i]>a[j]) {  c=a[i];  a[i]=a[j];   a[j]=c;  }
+                    if(a[i]>a[j]) {  
+                       swap(i,j);
+                    }
                 }
-                if(mf!=null) mf.refreshMass();
-                Thread.sleep(DELAY);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(BubbleSort.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
 

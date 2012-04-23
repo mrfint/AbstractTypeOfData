@@ -12,8 +12,8 @@ import model.Model;
 public class MainFrame extends JFrame{
     private Model model;
     private JPanel jpFace;
-    public static final int DEFAULT_WIDTH=400;
-    public static final int DEFAULT_HEIGHT=600;
+    public static final int DEFAULT_WIDTH=550;
+    public static final int DEFAULT_HEIGHT=650;
     private JButton btInit, btStart;
     
     public MainFrame(Model model){
@@ -23,18 +23,12 @@ public class MainFrame extends JFrame{
         this.model = model;
         //setLocationRelativeTo(this);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        
         //Create and set up the content pane.
         addContentPane(getContentPane());
         
     }
-    public void refreshMass(){
-        JPanel grid = (JPanel) jpFace.getComponent(0);
-        for(Component comp: grid.getComponents()) {
-             if(comp instanceof xPanel) {   
-                ((xPanel)comp).getMass();              
-            }
-        }
-    }
+ 
     
     public void addBtnsListeners(ActionListener[] actnListeners)
     {
@@ -46,11 +40,10 @@ public class MainFrame extends JFrame{
         contentPane.setLayout(new BorderLayout());
         
         JPanel grid = new JPanel( new GridLayout(10, 0, 0, 10) );
-        model.initMass();
+       
         for (int i = 0; i < 7; i++) {
             xPanel xpanel = new xPanel(i,model);
             xpanel.initMass();
-            
             grid.add(xpanel);
              
         }
@@ -77,6 +70,10 @@ public class MainFrame extends JFrame{
         contentPane.add(jpFace, BorderLayout.CENTER);
         // помещаем строку кнопок вниз окна
         contentPane.add(jpDnButtons, BorderLayout.SOUTH);
+    }
+
+    public JPanel getJpFace() {
+        return jpFace;
     }
     
 }
